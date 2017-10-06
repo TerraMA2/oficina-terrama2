@@ -24,6 +24,19 @@ var camadaDeEstados = L.tileLayer.wms(servidorWMSDoTerraMA2, {
     transparent: true,
     version: '1.3.0',
     crs: L.CRS.EPSG4326,
+});
+
+var inicio = moment().subtract(1, 'days').toISOString();
+var fim = moment().toISOString();
+
+var camadaDeFocosDeCalor = L.tileLayer.wms(servidorWMSDoTerraMA2, {
+    attribution: atribuicaoDoTerraMA2,
+    layers: 'terrama2_6:view6',
+    format: 'image/png',
+    transparent: true,
+    version: '1.3.0',
+    crs: L.CRS.EPSG4326,
+    time: inicio + '/' + fim,
 }).addTo(mapa);
 
 var camadasDeBase = {
@@ -32,6 +45,7 @@ var camadasDeBase = {
 
 var camadasDeSobreposicao = {
     'Estados brasileiros': camadaDeEstados,
+    'Focos de calor (últimas 24h)': camadaDeFocosDeCalor,
 };
 
 L.control.layers(camadasDeBase, camadasDeSobreposicao).addTo(mapa);
